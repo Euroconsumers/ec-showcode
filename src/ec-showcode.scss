@@ -1,0 +1,72 @@
+//TODO: get this dependency from the global culture sass files
+$global__grey: #4a4a4a; // body text
+$global__light-grey1: #bfbfbd;
+$global__light-grey2: #e0dfde;
+$global__light-grey3: #f9f8f7; // backgrounds
+$background__color: $global__light-grey3;
+
+@mixin rem($property, $size_in_px, $important:null) {
+	$shorthand_in_px: null;
+	$shorthand_in_rem: null;
+
+	@each $size in $size_in_px {
+		@if $size==0 {
+			$shorthand_in_px: join($shorthand_in_px, $size);
+			$shorthand_in_rem: join($shorthand_in_rem, ($size/10));
+		}
+		@else {
+			$shorthand_in_px: join($shorthand_in_px, ($size) + px);
+			$shorthand_in_rem: join($shorthand_in_rem, ($size/10) + rem);
+		}
+	}
+	$old-ie: false !default;
+
+	@if $old-ie {
+		#{$property}: $shorthand_in_px $important;
+	}
+	@else {
+		#{$property}: $shorthand_in_rem $important;
+	}
+}
+// end-global dependencies
+
+.pattern,
+.pattern--manual {
+	@include rem(margin-bottom, 20);
+}
+
+.pattern__container {
+	@include rem(margin-bottom, 0);
+	@include rem(padding, 10);
+	//border-bottom: 1px solid $global__light-grey2;
+
+	&.showless {
+		.comment,
+		pre {
+			display: none;
+		} 
+	}
+
+	pre {
+		@include rem(font-size, 12);
+		tab-size: 2;
+		display: inline-block;
+		vertical-align: top;
+		//width: 65%;
+		border-left: 3px solid $global__light-grey1;
+		@include rem(margin-bottom, 20);	
+	}
+}
+
+.showcode {
+	cursor: pointer;
+	@include rem(font-size, 11);
+	text-transform: uppercase;
+	color: $global__light-grey1;
+}
+
+.showcode__container {
+	text-align: right;
+	@include rem(margin, -5 0 5);
+}
+

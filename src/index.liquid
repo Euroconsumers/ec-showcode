@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>EC ShowCode</title>
+  <meta name="description" content="Adds button to reveal source code">
+  <meta name="author" content="Euroconsumers">
+
+  <link rel="stylesheet" href="https://cdn.euroconsumers.org/vendor/jquery/jquery-ui/1.12.0/jquery-ui.min.css">
+  <link rel="stylesheet" href="https://cdn.euroconsumers.org/vendor/jquery/jquery-ui/1.12.0/jquery-ui.theme.min.css">
+
+  <!-- TODO: load as a css dependency-->
+  <link rel="stylesheet" href="https://cdn.euroconsumers.org/vendor/highlight/9.2.0/styles/tomorrow.css">
+
+  <link rel="stylesheet" href="ec-showcode.css">
+
+
+</head>
+<body style="margin:1em">
+
+    <div id='content'></div>
+
+    <script src="https://cdn.euroconsumers.org/vendor/jquery/jquery/2.1.4/jquery-2.1.4.min.js"></script>
+    <script src="https://cdn.euroconsumers.org/vendor/jquery/jquery-ui/1.12.0/jquery-ui.min.js"></script>
+
+    <!-- TODO: load as a js dependency-->
+    <script src="https://cdn.euroconsumers.org/vendor/highlight/9.2.0/highlight.pack.js"></script>
+
+    <script src="ec-showcode.js"></script>
+
+<script>
+    $(document).ready(function () {
+        function startInitialisation(){
+            $('body').initialiseWidgets({
+                baseUrl: 'http://localhost:8080', // TODO: it seems that this initializer adds some sub-folders, so hardcoded widget and dependency scripts above                ext: '.min.js',
+                src: 'dist' // unfortunatelly this only chances middle subfolder 
+            });
+            highlightCode();
+        }
+        
+        $('#content').load('http://localhost:8080/ec-showcode.html', function( response, status, xhr ) {
+            if ( status == "error" ) console.warn("ec-showcode.html: " + xhr.status + " " + xhr.statusText);
+            
+            //  TODO: here we will need to start using our new loader
+            if(!$.fn.initialiseWidgets){
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'https://cdn.euroconsumers.org/vendor/euroconsumers/ec-widgets/dist/ec-widgets.min.js';
+                script.async = false;
+                document.body.appendChild(script);
+                script.onload = function () {
+                    startInitialisation();
+                };
+            } else {
+                startInitialisation();
+            }
+        });
+
+        function highlightCode() {
+            var encodeHtmlEntity = function (str) {
+                var buf = [];
+                for (var i = str.length - 1; i >= 0; i--) {
+                    buf.unshift(['&#', str[i].charCodeAt(), ';'].join(''));
+                }
+                return buf.join('');
+            };
+
+            $('.pattern').each(function () {
+                $(this).next('.comment').addBack().wrapAll('<div class="pattern__container showless"/>');
+            });
+
+            $(".pattern").each(function () {
+                //Remove first empty line in each pattern
+                var patternCode = $(this).html().replace(/[\n\r]/m, '');
+                //Find the indentation of the first line of code
+                var patternIndent = /\s*\</m.exec(patternCode);
+                //Remove from each line the amount of tab of the first line
+                patternCode = patternCode.split(patternIndent[0]).join('\<');
+                //Add the code of the pattern in pre>code to show the code of the pattern (Hidden by default)
+                $(this).after('<pre><code class="html">' + encodeHtmlEntity(patternCode) + '</code></pre>');
+            });
+
+            $('pre code').each(function (i, block) {
+                //Initialize Highlight.js on each code block
+                hljs.highlightBlock(block);
+            });
+
+            $('.pattern__container').prepend('<div class="showcode__container"><span class="showcode">&lt; Code &gt;</span></div>');
+            $('.showcode').click(function () {
+                $(this).closest('.pattern__container').toggleClass("showless");
+            });
+        }
+
+    });
+</script>
+
+
+
+</body>
+
+</html>
