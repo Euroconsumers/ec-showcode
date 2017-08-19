@@ -30,17 +30,11 @@ $background__color: $global__light-grey3;
 }
 // end-global dependencies
 
-.pattern,
-.pattern--manual {
-	@include rem(margin-bottom, 20);
-}
-
-.pattern__container {
+.showcode__pattern {
 	@include rem(margin-bottom, 0);
 	@include rem(padding, 10);
-	//border-bottom: 1px solid $global__light-grey2;
 
-	&.showless {
+	&.showcode--hide {
 		.comment,
 		pre {
 			display: none;
@@ -58,15 +52,11 @@ $background__color: $global__light-grey3;
 	}
 }
 
-.showcode {
+.showcode__button {
 	cursor: pointer;
-	@include rem(font-size, 11);
+	@include rem(font-size, 7);
 	text-transform: uppercase;
 	color: $global__light-grey1;
-}
-
-.showcode__container {
 	text-align: right;
 	@include rem(margin, -5 0 5);
 }
-

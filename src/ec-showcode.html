@@ -1,15 +1,24 @@
 <h1>ShowCode</h1>
 
 <h2>Highlight some html</h2>
-<div class="pattern">
-  <p>
-    This paragraph will be shown when clicking the code button.
-  </p>
-</div>
+<div data-plugin="showcode">
+    <div data-plugi="showcode">
+        <p>
+          This paragraph will be shown when clicking the code button.
+          We remoed the n from data-plugin so it would show-up in the documentation. 
+          TODO: ensure that showcode widget corrects this as an exception...
+        </p>
+      </div>
+  </div>
 
 <h2>Highlight some js</h2>
-<div class="pattern">
+<div data-plugin="showcode">
   <script>
     console.log('ShowCode logging to the console...')
   </script>
 </div>
+
+<h2>Dependencies</h2>
+<ul>
+  <li><a href="https://highlightjs.org/">https://highlightjs.org/</a></li>
+</ul>

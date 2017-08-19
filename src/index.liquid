@@ -36,7 +36,6 @@
                 baseUrl: 'http://localhost:8080', // TODO: it seems that this initializer adds some sub-folders, so hardcoded widget and dependency scripts above                ext: '.min.js',
                 src: 'dist' // unfortunatelly this only chances middle subfolder 
             });
-            highlightCode();
         }
         
         $('#content').load('http://localhost:8080/ec-showcode.html', function( response, status, xhr ) {
@@ -56,42 +55,6 @@
                 startInitialisation();
             }
         });
-
-        function highlightCode() {
-            var encodeHtmlEntity = function (str) {
-                var buf = [];
-                for (var i = str.length - 1; i >= 0; i--) {
-                    buf.unshift(['&#', str[i].charCodeAt(), ';'].join(''));
-                }
-                return buf.join('');
-            };
-
-            $('.pattern').each(function () {
-                $(this).next('.comment').addBack().wrapAll('<div class="pattern__container showless"/>');
-            });
-
-            $(".pattern").each(function () {
-                //Remove first empty line in each pattern
-                var patternCode = $(this).html().replace(/[\n\r]/m, '');
-                //Find the indentation of the first line of code
-                var patternIndent = /\s*\</m.exec(patternCode);
-                //Remove from each line the amount of tab of the first line
-                patternCode = patternCode.split(patternIndent[0]).join('\<');
-                //Add the code of the pattern in pre>code to show the code of the pattern (Hidden by default)
-                $(this).after('<pre><code class="html">' + encodeHtmlEntity(patternCode) + '</code></pre>');
-            });
-
-            $('pre code').each(function (i, block) {
-                //Initialize Highlight.js on each code block
-                hljs.highlightBlock(block);
-            });
-
-            $('.pattern__container').prepend('<div class="showcode__container"><span class="showcode">&lt; Code &gt;</span></div>');
-            $('.showcode').click(function () {
-                $(this).closest('.pattern__container').toggleClass("showless");
-            });
-        }
-
     });
 </script>
 

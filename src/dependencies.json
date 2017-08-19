@@ -1,5 +1,8 @@
 {
+  "css": {
+    "highlight": "https://cdn.euroconsumers.org/vendor/highlight/9.2.0/styles/tomorrow.css"
+    },
   "js": {
-    "zxcvbn": "https://cdn.euroconsumers.org/vendor/zxcvbn/4.4.2/dist/zxcvbn.js"
-    }
+    "highlight": "https://cdn.euroconsumers.org/vendor/highlight/9.2.0/highlight.pack.js"
+  }
 }
